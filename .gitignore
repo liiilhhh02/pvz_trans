@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+
+# 日志 / 运行产物
+logs/
+*.log
+*.ips
+
+# 构建与发布产物
+dist/
+build/
+*.app/
+*.pck
+*.ipa
+*.dylib
+*.so
+*.elf
+
+# 第三方游戏资源（版权原因不入库，见 ios/assets/README.md）
+ios/assets/*.dll
+linux/assets/*.dll
+
+# Python
+__pycache__/
+*.pyc

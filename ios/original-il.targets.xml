@@ -1,0 +1,11 @@
+  <!-- 原版 IL + NativeAOT：编译后用原版程序集覆盖产物，让 ilc 编译原版代码 -->
+  <Target Name="UseOriginalIl" AfterTargets="CoreCompile">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)/original/PlantsVsZombies.dll"
+          DestinationFiles="$(IntermediateOutputPath)$(AssemblyName).dll"
+          SkipUnchangedFiles="false" />
+  </Target>
+  <Target Name="UseOriginalIlBin" AfterTargets="Build">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)/original/PlantsVsZombies.dll"
+          DestinationFiles="$(TargetPath)"
+          SkipUnchangedFiles="false" />
+  </Target>
