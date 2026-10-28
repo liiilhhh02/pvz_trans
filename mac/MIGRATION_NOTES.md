@@ -1,12 +1,14 @@
 # 植物大战僵尸杂交版 ： Windows/Android 导出包 → macOS .app 迁移笔记
 
-> 交付物（都在本目录 `~/Downloads/pvz-transformer/`）：
+> 交付物（都在本目录）：
 > - **`port_pvz_mac.py`** ： 一键脚本：输入同版本的 Windows 导出 zip + Android APK，输出可双击的 `.app`（含启动自测、DMG 打包与针对性报错）。
 > - **`stability_test.py`** ： 稳定性自测：反复冷启动 + 长时挂机 + 断网启动，统计成功率并抓崩溃报告。
 > - **`packinfo.py`** ： 单文件"包体检"工具。
 > - 本文 ： 迁移过程中确认的事实、踩过的坑、以及扩展新版本/新平台的方法。
 >
 > 已实测版本：0.26.1 / 0.28.1 / 0.29 / 0.30（四个版本的架构完全一致，脚本通用）。
+>
+> 本文写于 macOS 阶段。第 10 节里 iOS / Linux 的结论已按后来的实现更新，具体流程以 [`ios/`](../ios/) 与 [`linux/`](../linux/) 为准。
 >
 > 常用命令：
 > ```bash
@@ -203,10 +205,10 @@ Windows 与 Android 两份 dll 逐字节只差 21 字节（其中 machine 2 字�
 | 目标 | 做法 | 状态 |
 |---|---|---|
 | Intel Mac | `--universal`（多放一份 `data_<asm>_macos_x86_64/`） | 可用 已实测产出双数据目录的 .app |
-| Linux | 同一配方：`linuxbsd` .NET 导出模板 + `microsoft.netcore.app.runtime.linux-x64` + 同一个 machine 补丁 | 未做，可照搬 |
+| Linux | 同一配方：`linuxbsd` .NET 导出模板 + `microsoft.netcore.app.runtime.linux-x64` + 同一个 machine 补丁 | 已实现，见 [`linux/`](../linux/)；构建与产物已校验，尚未在 Linux 实机启动 |
 | Windows | 直接用官方 zip（自带 .NET，无需依赖） | — |
 | Android | 直接用 APK（minSdk 24，仅 arm64-v8a） | — |
-| **iOS/iPadOS** | **不能**用现有材料做：① 必须 Apple 证书+描述文件签名（免费账号 7 天过期）；② 需要 `templates/ios.zip` + Xcode 构建；③ iOS 禁 JIT，程序集要 AOT 交叉编译成 ios-arm64，必须从 Godot **工程**重新导出（而 pck 里的 `.cs` 是空占位，没有源码）；④ 这份 pck 是 Windows 预设，没有触屏输入映射。现实替代：**串流**（Mac 跑游戏 + iPhone/iPad 装 Moonlight，局域网内玩） | 不可行 |
+| **iOS/iPadOS** | 已用 NativeAOT 实现：原版 IL 经 `dotnet publish -r ios-arm64` 交叉编译，Xcode 构建后重签，用免费 Apple ID 装真机。触屏输入由 pck 自带的输入映射处理；模组编辑器因 NativeAOT 无动态代码生成而不可用 | 已实现，见 [`ios/`](../ios/)；iPhone 17 Pro Max 实测通过。iOS 模拟器不支持（Metal image cube arrays） |
 
 新引擎版本（比如 4.8）需要同步的常量：脚本顶部 `PACK_FORMAT_SUPPORTED`（pck `format` 上限）、`ENGINE_MIN`；`--inspect` 会先告诉你新包的实测值，若 `format` 变大且启动自测报同一个入口点错误，再按第 3、4 节重新核对引擎行为即可。
 
@@ -292,7 +294,7 @@ python3 stability_test.py --app "../pvz/植物大战僵尸杂交版.app" --runs 
 
 ## 14. 文件清单
 
-交付目录：`~/Downloads/pvz-transformer/`
+交付目录：本目录（`mac/`）
 
 | 文件 | 作用 |
 |---|---|
@@ -301,7 +303,7 @@ python3 stability_test.py --app "../pvz/植物大战僵尸杂交版.app" --runs 
 | `MIGRATION_NOTES.md` | 本文（迁移经验：原理、必修补丁、数据目录配方、下载技巧、验证判读、分发压缩、稳定性、疑难表、平台扩展） |
 | `packinfo.py` | 单文件版"包体检"工具（输出 JSON：引擎版本/pck 头/程序集 machine/依赖清单），排查时比 `--inspect` 更好抓取 |
 
-历史开发脚本（早期手工打包与解析工具，功能已被上面脚本覆盖）留在 `~/Downloads/pvz/`：
+历史开发脚本（早期手工打包与解析工具，功能已被上面脚本覆盖）不随仓库发布：
 `build_app.py`、`extract_d64.py`、`extract_cs.py`、`fetch47.sh`、`fetch_macos_zip.sh`、`pck.py`、`pck_list.py`、`pck_list2.py`。
 
 
