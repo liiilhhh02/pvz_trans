@@ -11,6 +11,9 @@ cd linux
 ./build_linux.sh
 ```
 
+> [!IMPORTANT]
+> 脚本需要一个 **Godot 重建工程**（`PVZ_REBUILD`，默认 `~/Downloads/pvz-rebuild`），本仓库不包含它：pck 里的 `.cs` 是空占位，没有源码可导出。只想要成品的话直接用 Releases 里的 Linux 包。
+
 脚本依次做这些事：
 
 1. 如果导出模板里没有 `linux_release.x86_64`，从 `TEMPLATES_TPZ` 解压安装（默认 `$HOME/Downloads/pvz/godot472/templates_full.tpz`）
