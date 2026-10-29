@@ -14,7 +14,7 @@
 <img src="https://img.shields.io/badge/Godot-4.7%20Mono-478cbf?style=flat-square" alt="Godot 4.7 Mono">
 <a href="https://github.com/liiilhhh02/pvz_trans/stargazers"><img src="https://img.shields.io/github/stars/liiilhhh02/pvz_trans?style=flat-square&color=3f8f4a" alt="Stars"></a>
 
-[下载](#下载) · [平台状态](#平台状态) · [原理](#为什么能跑) · [常见问题](#常见问题) · [技术笔记](mac/MIGRATION_NOTES.md)
+[下载](#下载) · [平台状态](#平台状态) · [实机截图](#实机截图) · [原理](#为什么能跑) · [常见问题](#常见问题) · [技术笔记](mac/MIGRATION_NOTES.md)
 
 </div>
 
@@ -56,6 +56,16 @@
 - macOS 上偶发启动崩溃（`.ips` 显示 SIGBUS 在 .NET 终结器线程回调引擎原生码），调试期 10 次左右出现 1 次，随后 10 轮连续测试未复现；无游戏源码，无法根除。
 - iOS 上游戏内的模组编辑器不可用：它依赖 Roslyn 运行时编译，NativeAOT 不支持动态代码生成。基础游戏不受影响。
 - 所有包都未做 Apple 公证，跨机分发只能右键打开。
+
+## 实机截图
+
+<div align="center">
+
+<img src="docs/macos-menu.png" alt="macOS 上运行的《植物大战僵尸杂交版》主菜单" width="100%">
+
+<sub>macOS 0.30 实机运行：系统原生窗口，直接加载原版 pck，没有 CrossOver、虚拟机或串流</sub>
+
+</div>
 
 ## 为什么能跑
 
@@ -179,7 +189,7 @@ macOS：换 zip/APK 重跑 `port_pvz_mac.py`。iOS / Linux：替换 pck 与 DLL 
 | [`mac/`](mac/) | 一键打包 `.app` / DMG、稳定性自测、包体检工具，以及 300 行迁移笔记 |
 | [`ios/`](ios/) | 真机安装与重签脚本、原版 IL 的 MSBuild target、日志抓取 |
 | [`linux/`](linux/) | Linux x86_64 构建脚本 |
-| [`docs/`](docs/) | 仓库头图与社交预览图 |
+| [`docs/`](docs/) | 仓库头图、社交预览图与实机截图 |
 
 脚本未声明开源许可证（默认保留所有权利）。要复用或分发脚本，请先开 Issue 联系作者。
 
